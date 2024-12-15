@@ -1,0 +1,84 @@
+-- unique product and avg prices for each vendor, and order by the top 10 most wanted products
+
+-- execution order: 
+-- FROM/JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT
+
+
+SELECT  vendor,
+        vendor_name,
+        COUNT(DISTINCT category_name) as cnt,
+        AVG(bottle_price) as avg_price
+FROM table
+GROUP BY vendor, vendor_name
+ORDER BY cnt DESC;
+
+
+
+-- return product and its supplier name
+
+SELECT a.ProductName, b.SupplierName
+FROM product a
+LEFT JOIN supplier b
+WHERE a.supplierId = b.supplierId;
+
+-- drop: Deletes entire database objects like tables, views, or databases :  no rollback
+-- truncate: Deletes all rows from a table without logging individual row deletions: no rollback
+-- delete from : Removes specific rows from a table based on a condition.
+
+
+-- the 4th most expensive product based on product price
+
+WITH TEMP AS (
+    SELECT productId, productName, price
+    FROM table
+    ORDER BY price DESC
+    LIMIT 4
+)
+
+SELECT productId, productName, MIN(price)
+FROM TEMP
+GROUP BY 1,2;
+
+
+WITH TEMP AS (
+    SELECT productId, productName, price
+        DENSE_RANK() OVER(PARTITION BY categoryId ORDER BY price DESC) as rnk
+    FROM table
+)
+
+SELECT productId, productName, price
+FROM TEMP
+WHERE rnk = 4;
+
+-- new col based on price, if price >= 100, label as high_end, between 20 and 100, label as middle_end; others are low_end
+-- # of products in each category
+
+WITH TEMP AS (
+    SELECT 
+        productID,
+        CASE WHEN price >= 100 THEN 'high_end'
+        CASE WHEN price >= 20 AND price < 100 THEN 'middle_end'
+        ELSE 'low_end'
+        END AS price_level
+    FROM table
+)
+
+SELECT 
+    COUNT(DISTINCT productID), 
+    price_level
+FROM TEMP
+GROUP BY price_level;
+
+-- the number of product whose prices is >= 200
+SELECT
+    SUM(CASE WHEN price >= 200 THEN 1 ELSE 0 END) AS total
+FROM table
+
+-- window function
+-- row_number() 5 6 7 8 
+-- dense_rank() 5 5 5 6
+-- rank() 5 5 5 8 
+-- ntile(): NTILE(4)
+-- sum()
+
+
