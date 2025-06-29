@@ -1,0 +1,217 @@
+"1","
+```{=html}
+
+<!-- rnb-htmlwidget-begin eyJkZXBlbmRlbmNpZXMiOlt7Im5hbWUiOiJqcXVlcnkiLCJ2ZXJzaW9uIjoiMy42LjAiLCJzcmMiOnsiZmlsZSI6Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvNC41LXg4Nl82NC9SZXNvdXJjZXMvbGlicmFyeS9qcXVlcnlsaWIvbGliLzMuNi4wIn0sIm1ldGEiOltdLCJzY3JpcHQiOiJqcXVlcnktMy42LjAubWluLmpzIiwic3R5bGVzaGVldCI6W10sImhlYWQiOltdLCJhdHRhY2htZW50IjpbXSwiYWxsX2ZpbGVzIjp0cnVlfSx7Im5hbWUiOiJib290c3RyYXAiLCJ2ZXJzaW9uIjoiMy4zLjUiLCJzcmMiOnsiZmlsZSI6Ii9MaWJyYXJ5L0ZyYW1ld29ya3MvUi5mcmFtZXdvcmsvVmVyc2lvbnMvNC41LXg4Nl82NC9SZXNvdXJjZXMvbGlicmFyeS9ybWFya2Rvd24vcm1kL2gvYm9vdHN0cmFwIn0sIm1ldGEiOnsidmlld3BvcnQiOiJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MSJ9LCJzY3JpcHQiOlsianMvYm9vdHN0cmFwLm1pbi5qcyIsInNoaW0vaHRtbDVzaGl2Lm1pbi5qcyIsInNoaW0vcmVzcG9uZC5taW4uanMiXSwic3R5bGVzaGVldCI6ImNzcy9jb3Ntby5taW4uY3NzIiwiaGVhZCI6IjxzdHlsZT5oMSB7Zm9udC1zaXplOiAzNHB4O31cbiAgICAgICBoMS50aXRsZSB7Zm9udC1zaXplOiAzOHB4O31cbiAgICAgICBoMiB7Zm9udC1zaXplOiAzMHB4O31cbiAgICAgICBoMyB7Zm9udC1zaXplOiAyNHB4O31cbiAgICAgICBoNCB7Zm9udC1zaXplOiAxOHB4O31cbiAgICAgICBoNSB7Zm9udC1zaXplOiAxNnB4O31cbiAgICAgICBoNiB7Zm9udC1zaXplOiAxMnB4O31cbiAgICAgICBjb2RlIHtjb2xvcjogaW5oZXJpdDsgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgwLCAwLCAwLCAwLjA0KTt9XG4gICAgICAgcHJlOm5vdChbY2xhc3NdKSB7IGJhY2tncm91bmQtY29sb3I6IHdoaXRlIH08XC9zdHlsZT4iLCJhdHRhY2htZW50IjpbXSwicGFja2FnZSI6W10sImFsbF9maWxlcyI6dHJ1ZX0seyJuYW1lIjoia2VQcmludCIsInZlcnNpb24iOiIwLjAuMSIsInNyYyI6eyJmaWxlIjoiL0xpYnJhcnkvRnJhbWV3b3Jrcy9SLmZyYW1ld29yay9WZXJzaW9ucy80LjUteDg2XzY0L1Jlc291cmNlcy9saWJyYXJ5L2thYmxlRXh0cmEva2VQcmludC0wLjAuMSJ9LCJtZXRhIjpbXSwic2NyaXB0Ijoia2VQcmludC5qcyIsInN0eWxlc2hlZXQiOltdLCJoZWFkIjpbXSwiYXR0YWNobWVudCI6W10sInBhY2thZ2UiOltdLCJhbGxfZmlsZXMiOnRydWV9LHsibmFtZSI6ImxpZ2h0YWJsZSIsInZlcnNpb24iOiIwLjAuMSIsInNyYyI6eyJmaWxlIjoiL0xpYnJhcnkvRnJhbWV3b3Jrcy9SLmZyYW1ld29yay9WZXJzaW9ucy80LjUteDg2XzY0L1Jlc291cmNlcy9saWJyYXJ5L2thYmxlRXh0cmEvbGlnaHRhYmxlLTAuMC4xIn0sIm1ldGEiOltdLCJzY3JpcHQiOltdLCJzdHlsZXNoZWV0IjoibGlnaHRhYmxlLmNzcyIsImhlYWQiOltdLCJhdHRhY2htZW50IjpbXSwicGFja2FnZSI6W10sImFsbF9maWxlcyI6dHJ1ZX1dLCJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInNoaW55LnRhZy5saXN0Il0sInNpemluZ1BvbGljeSI6W119fQ== -->
+
+<table class=\"table table-striped table-hover table-condensed\" style=\"margin-left: auto; margin-right: auto;\">
+<caption>Total Revenue by Quarter</caption>
+ <thead>
+  <tr>
+   <th style=\"text-align:left;\"> Quarter </th>
+   <th style=\"text-align:right;\"> Total Revenue ($) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0001 </td>
+   <td style=\"text-align:right;\"> 1835.45 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0002 </td>
+   <td style=\"text-align:right;\"> 1357.66 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0003 </td>
+   <td style=\"text-align:right;\"> 2061.12 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0004 </td>
+   <td style=\"text-align:right;\"> 1843.85 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0005 </td>
+   <td style=\"text-align:right;\"> 441.08 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0006 </td>
+   <td style=\"text-align:right;\"> 1928.93 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0007 </td>
+   <td style=\"text-align:right;\"> 1333.10 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0008 </td>
+   <td style=\"text-align:right;\"> 892.02 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0009 </td>
+   <td style=\"text-align:right;\"> 1763.23 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0010 </td>
+   <td style=\"text-align:right;\"> 1958.98 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0011 </td>
+   <td style=\"text-align:right;\"> 1795.15 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q1-0012 </td>
+   <td style=\"text-align:right;\"> 1926.23 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0001 </td>
+   <td style=\"text-align:right;\"> 1106.65 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0002 </td>
+   <td style=\"text-align:right;\"> 1725.42 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0003 </td>
+   <td style=\"text-align:right;\"> 1948.31 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0004 </td>
+   <td style=\"text-align:right;\"> 1267.36 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0005 </td>
+   <td style=\"text-align:right;\"> 1384.98 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0006 </td>
+   <td style=\"text-align:right;\"> 823.36 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0007 </td>
+   <td style=\"text-align:right;\"> 474.07 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0008 </td>
+   <td style=\"text-align:right;\"> 1059.62 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0009 </td>
+   <td style=\"text-align:right;\"> 2188.37 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0010 </td>
+   <td style=\"text-align:right;\"> 835.34 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0011 </td>
+   <td style=\"text-align:right;\"> 1729.39 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q2-0012 </td>
+   <td style=\"text-align:right;\"> 640.67 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0001 </td>
+   <td style=\"text-align:right;\"> 1688.18 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0002 </td>
+   <td style=\"text-align:right;\"> 1400.07 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0003 </td>
+   <td style=\"text-align:right;\"> 1691.09 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0004 </td>
+   <td style=\"text-align:right;\"> 1481.89 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0005 </td>
+   <td style=\"text-align:right;\"> 1717.01 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0006 </td>
+   <td style=\"text-align:right;\"> 955.43 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0007 </td>
+   <td style=\"text-align:right;\"> 1822.76 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0008 </td>
+   <td style=\"text-align:right;\"> 1760.70 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0009 </td>
+   <td style=\"text-align:right;\"> 1522.49 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0010 </td>
+   <td style=\"text-align:right;\"> 1727.48 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0011 </td>
+   <td style=\"text-align:right;\"> 1609.33 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q3-0012 </td>
+   <td style=\"text-align:right;\"> 1598.71 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0001 </td>
+   <td style=\"text-align:right;\"> 747.84 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0002 </td>
+   <td style=\"text-align:right;\"> 2144.30 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0003 </td>
+   <td style=\"text-align:right;\"> 1763.43 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0004 </td>
+   <td style=\"text-align:right;\"> 1256.36 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0005 </td>
+   <td style=\"text-align:right;\"> 2548.15 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0006 </td>
+   <td style=\"text-align:right;\"> 875.39 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0007 </td>
+   <td style=\"text-align:right;\"> 750.89 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0008 </td>
+   <td style=\"text-align:right;\"> 1562.98 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0009 </td>
+   <td style=\"text-align:right;\"> 1443.61 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0010 </td>
+   <td style=\"text-align:right;\"> 1114.97 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0011 </td>
+   <td style=\"text-align:right;\"> 421.45 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> Q4-0012 </td>
+   <td style=\"text-align:right;\"> 1214.70 </td>
+  </tr>
+  <tr>
+   <td style=\"text-align:left;\"> QNA-NA </td>
+   <td style=\"text-align:right;\"> 112710.42 </td>
+  </tr>
+</tbody>
+</table> <script type=\"text/x-mathjax-config\">MathJax.Hub.Config({tex2jax: {inlineMath: [[\"$\",\"$\"]]}})</script><script async src=\"https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>
+
+<!-- rnb-htmlwidget-end -->
+
+```
+"

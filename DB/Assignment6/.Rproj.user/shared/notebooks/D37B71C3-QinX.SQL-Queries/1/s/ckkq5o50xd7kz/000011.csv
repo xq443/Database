@@ -1,0 +1,6 @@
+"0","print("
+"0","  dbGetQuery(dbcon, """
+"0","    SELECT COUNT(DISTINCT Country) AS UniqueSupplierCountries"
+"0","    FROM Suppliers;"
+"0",""")"
+"0",")"

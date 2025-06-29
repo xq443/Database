@@ -1,0 +1,110 @@
+---
+title: "Analyze Incidents & Flights"
+subtitle: CS5200 Practicum I
+author: Xujia Qin
+semester: SummerI 2025
+date: May 31th, 2025
+output:
+  pdf_document: 
+    latex_engine: xelatex
+    extra_dependencies: ["booktabs", "longtable", "array", "multirow", "xcolor", "wrapfig", "float", "colortbl"]
+---
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Load libraries
+library(DBI)
+library(RMySQL)
+library(kableExtra)
+library(knitr)
+
+# Connect to the database
+db_user <- 'avnadmin'
+db_password <- 'AVNS_myNMlu7wBu69NOuFkU1'
+db_name <- 'defaultdb'
+db_host <- 'mysql-1c2ba4a8-northeastern-cee5.k.aivencloud.com'
+db_port <- 19461
+
+con <- dbConnect(MySQL(), user = db_user, password = db_password,
+                 dbname = db_name, host = db_host, port = db_port)
+```
+
+
+## Analysis by Month
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Query: count of incidents per type per month
+result <- dbGetQuery(con, "
+  SELECT
+    MONTHNAME(STR_TO_DATE(date, '%Y-%m-%d')) AS Month,
+    incident_type,
+    COUNT(*) AS total_incidents
+  FROM Incident
+  GROUP BY Month, incident_type
+  ORDER BY FIELD(Month, 'January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December')
+")
+
+if(nrow(result) > 0) {
+    print(result)
+}
+```
+## Analysis by Airline
+```{r echo = FALSE, , message=FALSE,warning=FALSE}
+# Query using a CTE to get total incidents and average delay per airline
+airline_stats <- dbGetQuery(con, "
+  WITH AirlineIncidentCTE AS (
+    SELECT
+      f.airline AS airline,
+      COUNT(i.iid) AS total_incidents,
+      ROUND(SUM(COALESCE(i.delay_mins, 0)) / COUNT(i.iid), 2) AS avg_delay_mins
+    FROM Incident i
+    JOIN Flight f ON i.flight_number = f.flight_number AND i.date = f.date
+    GROUP BY f.airline
+  )
+  SELECT * FROM AirlineIncidentCTE
+  ORDER BY total_incidents DESC;
+")
+
+
+if(nrow(airline_stats) > 0) { # the number of rows 
+    print(airline_stats)
+}
+
+```
+## Trend by Year
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# query to get total incidents per year
+incident_trend <- dbGetQuery(con, "
+  SELECT
+    YEAR(date) AS year,
+    COUNT(*) AS total_incidents
+  FROM Incident
+  GROUP BY year
+  ORDER BY year
+")
+
+# Plotting the trend
+years <- incident_trend$year
+totals <- incident_trend$total_incidents
+
+plot(
+  years, totals, type = "o", col = "black",
+  xlab = "Year", ylab = "Total Number of Incidents",
+  main = "Trend of Incidents by Year",
+  pch = 16, lwd = 2
+)
+
+# Add data labels to each point
+text(
+  years, totals, labels = totals,
+  pos = 3, cex = 0.8, col = "black"
+)
+
+```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# Disconnect from the database
+dbDisconnect(con)
+```
+
+

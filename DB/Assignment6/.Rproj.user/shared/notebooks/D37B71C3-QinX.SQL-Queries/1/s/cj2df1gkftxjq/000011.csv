@@ -1,0 +1,8 @@
+"0","print("
+"0","  dbGetQuery(dbcon, """
+"0","    SELECT LastName, FirstName"
+"0","    FROM Employees"
+"0","    ORDER BY BirthDate DESC"
+"0","    LIMIT 1;"
+"0","  "")"
+"0",")"

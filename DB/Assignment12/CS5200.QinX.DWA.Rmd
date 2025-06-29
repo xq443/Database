@@ -1,0 +1,293 @@
+---
+title: "Explore Data Warehouses"
+author: Xujia Qin
+semester: SummerI 2025
+date: Jun 15th, 2025
+output:
+  pdf_document: 
+    latex_engine: xelatex
+    extra_dependencies: ["booktabs", "longtable", "array", "multirow", "xcolor", "wrapfig", "float", "colortbl"]
+---
+
+### Q1: Fact Tables, Star Schemas, and OLAP in Relational Databases
+
+#### Fact Tables
+- Store **numeric business metrics** (e.g., sales, revenue, quantities).  
+- Each row represents a measurable event (like a transaction or shipment).  
+- Use **foreign keys** to link to **dimension tables** (e.g., Date, Product, Customer).  
+
+#### Star Schema
+- A simple, denormalized design with:  
+  - A **central fact table** (containing the measurable data).  
+  - Connected directly to **dimension tables** (descriptive attributes).  
+- Visually resembles a **star**—hence the name!  
+- Optimized for fast querying and reporting.  
+
+#### Can a Transactional Database be Used for OLAP?
+
+- Transactional (OLTP) databases are optimized for speed and data integrity during inserts/updates—great for daily business operations. However, they are **not suitable** for OLAP due to:
+
+  - Poor performance with large, complex queries.
+  - Normalized schemas not optimized for aggregations with redundent data
+  - Overwhelming in CPU workload, OOM, or I/O bottleneck issues.
+- Therefore, **OLTP systems should not be used to house OLAP**. Instead, ETL implementation is good into a dedicated warehouse design.
+
+#### Why Use a Relational DB + Star Schema vs. NoSQL?
+
+- While **NoSQL** systems (like MongoDB, Cassandra) offer horizontal scalability and flexibility, **relational databases with star schemas** are still preferred for OLAP because:
+  
+  - Powerful **query optimization** and **indexing**
+  - Strong **data integrity** and constraints with ACID compliance
+  - Better performance for complex **joins and aggregations** with star schemas
+  - Mature **BI tool** (e.g., Tableau, Power BI, Looker)
+
+---
+
+### Q2: Data Warehouse vs. Data Mart vs. Data Lake
+
+| Feature          | Data Warehouse 🏢           | Data Mart 🏪               | Data Lake 🌊               |
+|------------------|----------------------------|---------------------------|---------------------------|
+| **Who uses it?** | Big bosses & analysts      | Specific Department (e.g.:Marketing/Sales teams)     | Data engineers|
+| **Data Type**    | Clean, organized data      | Clean, focused data       | Raw, messy data           |
+| **Speed**        | Pretty fast                | Super fast                | Slow (needs ETL cleaning)     |
+| **Cost**         | High                     | Moderate                       | Low                        |
+
+## What They Actually Do
+
+- **Data Warehouse**: Like a company's main library - all central repository for integrated, the important, cleaned-up data in one place.
+- **Data Mart**: Like a department's bookshelf - just a focused subset of a data warehouse intended for a specific team.
+- **Data Lake**: Like a giant storage unit for raw, unstructured, or semi-structured data.
+
+## Real-Life Example
+In my experience working on a data engineering internship,
+1. Dumped all the raw data into an **AWS S3 data lake** (the "storage unit"as data lake)
+2. Cleaned it up and moved it to **Snowflake** (the "main library" as datawarehouse)
+3. Gave the marketing team their own **data mart** (the "special bookshelf")
+
+## Video Reference (https://www.youtube.com/watch?v=-bSkREem8dM)
+
+---
+
+### Q3: Designing a Fact Table for the Sakila Database
+
+#### 🎯 Analytical Goal
+
+I aim to analyze **rental revenue and activity** over time, broken down by staff, customer, and store. This will support monthly/quarterly revenue trends.
+---
+
+### ⭐ Star Schema Overview
+
+We design a fact table named `fact_rental_revenue` and connect it with four dimension tables:
+
+| Table              | Type       | Description                                |
+|-------------------|------------|--------------------------------------------|
+| `fact_rental_revenue` | Fact      | Metrics such as revenue and late days       |
+| `dim_date`         | Dimension  | Rental date in various formats             |
+| `dim_customer`     | Dimension  | Customer information                       |
+| `dim_staff`        | Dimension  | Staff who processed the rental             |
+| `dim_store`        | Dimension  | Store location                             |
+
+---
+
+### 🏗️ Fact Table: `fact_rental_revenue`
+
+Each row corresponds to one rental transaction.
+
+| Column Name         | Type    | Description                                 |
+|---------------------|---------|---------------------------------------------|
+| `rental_id`         | INT     | Primary key (from `rental` table)           |
+| `date_id`           | INT     | Foreign key to `dim_date`                   |
+| `customer_id`       | INT     | Foreign key to `dim_customer`               |
+| `staff_id`          | INT     | Foreign key to `dim_staff`                  |
+| `store_id`          | INT     | Foreign key to `dim_store`                  |
+| `rental_amount`     | REAL    | Amount paid for the rental (from `payment`)|
+| `late_return_days`  | INT     | Return delay in days (return - rental date) |
+
+---
+
+### 📅 Dimension: `dim_date`
+
+| Column       | Description            |
+|--------------|------------------------|
+| `date_id`    | Surrogate primary key  |
+| `date`       | Date (YYYY-MM-DD)      |
+| `day`        | Day of month           |
+| `month`      | Month number           |
+| `year`       | Year                   |
+| `weekday`    | Weekday name           |
+| `is_weekend` | Boolean                |
+
+---
+
+### 🧑 Dimension: `dim_customer`
+
+| Column        | Description             |
+|---------------|-------------------------|
+| `customer_id` | Customer ID (PK)        |
+| `first_name`  |                         |
+| `last_name`   |                         |
+| `email`       |                         |
+| `active`      | TRUE/FALSE              |
+
+---
+
+### 🧍 Dimension: `dim_staff`
+
+| Column       | Description              |
+|--------------|--------------------------|
+| `staff_id`   | Staff ID (PK)            |
+| `first_name` |                          |
+| `last_name`  |                          |
+| `store_id`   | Foreign key to store     |
+
+---
+
+### 🏬 Dimension: `dim_store`
+
+| Column       | Description             |
+|--------------|-------------------------|
+| `store_id`   | Store ID (PK)           |
+| `address_id` | To join with location   |
+| `manager_id` |                         |
+
+---
+
+### Q4: Create and Populate OLAP Fact Table in `SakilaOLAP.db`
+
+In this step,
+1. Create a new OLAP database: `SakilaOLAP.db`.
+2. Design and create a fact table: `fact_rental_revenue`.
+3. Extract relevant rental facts from the original `sakila.db`.
+4. Populate the fact table in the new OLAP database.
+---
+
+---
+
+### 1. Connect to Databases
+```{r setup, include=FALSE}
+# Load libraries
+library(DBI)
+library(RSQLite)
+library(knitr)
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Connect to original transactional database
+sakila_conn <- dbConnect(SQLite(), "sakila.db")
+
+# Create and connect to new OLAP database
+olap_conn <- dbConnect(SQLite(), "SakilaOLAP.db")
+print("Database Connected!")
+```
+
+---
+
+### 2. Create Fact Table in OLAP Database
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Drop table if it exists
+invisible(dbExecute(olap_conn, "DROP TABLE IF EXISTS fact_rental_revenue"))
+
+# Create a new fact table to store aggregated rental revenue information
+create_fact_table_sql <- "
+  CREATE TABLE fact_rental_revenue (
+    rental_id INTEGER PRIMARY KEY,
+    date_id TEXT,
+    customer_id INTEGER,
+    staff_id INTEGER,
+    store_id INTEGER,
+    rental_amount REAL,
+    late_return_days INTEGER
+  );
+"
+
+invisible(dbExecute(olap_conn, create_fact_table_sql))
+print("Fact table is created!")
+```
+
+---
+
+### 3. Extract and Transform Facts from `sakila.db`
+
+I'll join the following tables:
+
+- `rental` for rental info
+- `payment` for rental revenue
+- `inventory` for store ID
+- `staff` and `customer` for foreign keys
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+extract_query <- "
+  SELECT 
+    r.rental_id,
+    DATE(r.rental_date) AS date_id,
+    r.customer_id,
+    r.staff_id,
+    i.store_id,
+    IFNULL(SUM(p.amount), 0) AS rental_amount,
+    CAST((JULIANDAY(r.return_date) - JULIANDAY(r.rental_date)) AS INTEGER) AS late_return_days
+  FROM rental r
+  JOIN inventory i ON r.inventory_id = i.inventory_id
+  LEFT JOIN payment p ON r.rental_id = p.rental_id
+  GROUP BY r.rental_id
+"
+
+rental_facts <- dbGetQuery(sakila_conn, extract_query)
+head(rental_facts)
+```
+
+---
+
+### 4. Load Data into OLAP Fact Table
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Insert extracted data into OLAP database
+dbWriteTable(olap_conn, "fact_rental_revenue", rental_facts, append = TRUE, row.names = FALSE)
+
+# Check that data was inserted
+dbGetQuery(olap_conn, "SELECT COUNT(*) AS row_count FROM fact_rental_revenue")
+```
+
+---
+
+### 5. Preview Final Fact Table
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Display sample rows from OLAP fact table
+dbGetQuery(olap_conn, "SELECT * FROM fact_rental_revenue LIMIT 10")
+```
+
+---
+
+### Q5: Rental Analytics — Average Rental Amount Per Month (year 2005)
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+query <- "
+  SELECT 
+    SUBSTR(date_id, 1, 7) AS year_month,
+    ROUND(AVG(rental_amount), 2) AS avg_rental_amount
+  FROM fact_rental_revenue
+  WHERE date_id LIKE '2005-%'
+  GROUP BY year_month
+  ORDER BY year_month
+"
+
+monthly_avg <- dbGetQuery(olap_conn, query)
+print(monthly_avg)
+```
+### formatted table
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+kable(monthly_avg, col.names = c("Year-Month", "Average Rental Amount ($)"))
+```
+
+
+### Disconnect from Both Databases
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+dbDisconnect(sakila_conn)
+dbDisconnect(olap_conn)
+print("Database is disconnected!")
+```
+
+

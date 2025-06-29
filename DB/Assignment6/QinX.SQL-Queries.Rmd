@@ -1,0 +1,347 @@
+---
+title: "Query a Database with SQL"
+author: Xujia Qin
+output: html_document
+date: "2025-05-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Connect with DB
+```{r}
+# Load RSQLite library
+library(RSQLite)
+
+# Define file path and database file name
+fpath <- "/Users/cathyqin/Desktop/DB/Assignment6/"
+dbfile <- "OrdersDB.sqlitedb.db"
+
+# Connect to existing DB or create a new one
+dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))
+
+# List all tables
+tables <- dbListTables(dbcon)
+
+# For each table, get its schema
+for (table in tables) {
+  cat("Schema for table:", table, "\n")
+  print(dbListFields(dbcon, table))
+  cat("\n")
+}
+
+# Enable foreign key constraint
+dbExecute(dbcon, "PRAGMA foreign_keys = ON")
+
+```
+
+## 1: Last name, first name, and birth date of all employees, sorted by last name
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT LastName, FirstName, BirthDate
+    FROM Employees
+    ORDER BY LastName;
+  ")
+)
+```
+## 2: The names of each category and the number of distinct products in that category
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT c.CategoryName, COUNT(DISTINCT p.ProductID) AS ProductCount
+    FROM Categories c
+    JOIN Products p ON c.CategoryID = p.CategoryID
+    GROUP BY c.CategoryName
+    ORDER BY COUNT(DISTINCT p.ProductID) DESC;
+  ")
+)
+```
+
+## 3: List the number of orders by customer ID and name, ordered from most to least, restricted to those customers who have placed at least one order.
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT c.CustomerID, c.CustomerName, COUNT(o.OrderID) AS OrderCount
+    FROM Customers c
+    JOIN Orders o ON c.CustomerID = o.CustomerID
+    GROUP BY c.CustomerID, c.CustomerName
+    HAVING COUNT(o.OrderID) > 0
+    ORDER BY OrderCount DESC;
+  ")
+)
+```
+
+## 4: What is the last name and first name of the youngest employee?
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT LastName, FirstName
+    FROM Employees
+    ORDER BY BirthDate DESC
+    LIMIT 1;
+  ")
+)
+```
+
+## 5: What are the total number of unique purchases for each country, ordered alphabetically by country?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT Country, COUNT(DISTINCT OrderID) AS UniquePurchases
+    FROM Orders o
+    JOIN Customers c ON c.CustomerId = o.CustomerId
+    GROUP BY c.Country
+    ORDER BY c.Country ASC;
+  ")
+)
+```
+
+## 6: How many employees never worked with a single customer, i.e., they appear in the Employees table but not in the Orders table?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT COUNT(*) AS UnassignedEmployees
+    FROM Employees e
+    WHERE e.EmployeeID NOT IN (
+      SELECT DISTINCT EmployeeID FROM Orders
+    );
+")
+)
+```
+
+## 7: How many products contain either "Caviar" or "Kaviar" in the name of the product?
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT COUNT(*) AS CaviarProducts
+    FROM Products
+    WHERE ProductName LIKE '%Caviar%' OR ProductName LIKE '%Kaviar%';
+  ")
+)
+```
+
+## 8: What is the total number of distinct countries to which at least one order was shipped?
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT 
+      COUNT(DISTINCT c.Country) AS DistinctCountriesWithOrders
+    FROM 
+      Orders o
+    JOIN 
+      Customers c ON o.CustomerID = c.CustomerID;
+  ")
+)
+```
+
+
+## 9: What is the total for each order, i.e., the amount that the customers is required to pay for the products at the ordered quantity in the order. List the order ID, the order date, the name of the customer, and the total cost.
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT 
+      o.OrderID,
+      o.OrderDate,
+      c.CustomerName,
+      SUM(od.Quantity * p.Price) AS TotalCost
+    FROM 
+      Orders o
+    JOIN 
+      OrderDetails od ON o.OrderID = od.OrderID
+    JOIN 
+      Products p ON od.ProductID = p.ProductID
+    JOIN 
+      Customers c ON o.CustomerID = c.CustomerID
+    GROUP BY 
+      o.OrderID, o.OrderDate, c.CustomerName
+    ORDER BY 
+      o.OrderID;
+  ")
+)
+```
+
+## 10: Which supplier sells the most products?
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT s.SupplierName, COUNT(p.ProductID) AS ProductCount
+    FROM Suppliers s
+    JOIN Products p ON s.SupplierID = p.SupplierID
+    ORDER BY ProductCount DESC
+    LIMIT 1;
+")
+)
+```
+## 11: Which product was ordered most often by different customers?
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT p.ProductName, COUNT(DISTINCT o.CustomerID) AS DistinctCustomers
+    FROM OrderDetails od
+    JOIN Orders o ON od.OrderID = o.OrderID
+    JOIN Products p ON od.ProductID = p.ProductID
+    GROUP BY p.ProductID
+    ORDER BY DistinctCustomers DESC
+    LIMIT 1;
+")
+)
+```
+
+## 12: Which product has the most quantity sold?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT p.ProductName, SUM(od.Quantity) AS TotalQuantity
+    FROM OrderDetails od
+    JOIN Products p ON od.ProductID = p.ProductID
+    GROUP BY od.ProductID
+    ORDER BY TotalQuantity DESC
+    LIMIT 1;
+")
+)
+```
+## 13: What is the total amount spent by all customers who do live in Germany?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT 
+      SUM(od.Quantity * p.Price) AS TotalSpentByGerman
+    FROM 
+      Customers c
+    JOIN 
+      Orders o ON c.CustomerID = o.CustomerID
+    JOIN 
+      OrderDetails od ON o.OrderID = od.OrderID
+    JOIN 
+      Products p ON od.ProductID = p.ProductID
+    WHERE 
+      c.Country = 'Germany';
+")
+)
+```
+## 14: What is the difference in spending between the country to which the most was sold versus the country to which the least was sold?
+```{r}
+
+print(
+  dbGetQuery(dbcon, "
+    SELECT 
+      MAX(TotalSpent) - MIN(TotalSpent) AS SpendingDifference
+    FROM (
+      SELECT 
+        c.Country,
+        SUM(od.Quantity * p.Price) AS TotalSpent
+      FROM 
+        Customers c
+      JOIN 
+        Orders o ON c.CustomerID = o.CustomerID
+      JOIN 
+        OrderDetails od ON o.OrderID = od.OrderID
+      JOIN 
+        Products p ON od.ProductID = p.ProductID
+      GROUP BY 
+        c.Country
+    ) AS CountrySpending;
+")
+)
+```
+
+## 15: Which country has the most customers?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT Country, COUNT(*) AS CustomerCount
+    FROM Customers
+    GROUP BY Country
+    ORDER BY CustomerCount DESC
+    LIMIT 1;
+")
+)
+```
+
+## 16: Which employee sold the most in terms of "dollar amount" sold?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT 
+      e.EmployeeID,
+      e.FirstName || ' ' || e.LastName AS EmployeeName,
+      SUM(od.Quantity * p.Price) AS TotalSales
+    FROM 
+      Employees e
+    JOIN 
+      Orders o ON e.EmployeeID = o.EmployeeID
+    JOIN 
+      OrderDetails od ON o.OrderID = od.OrderID
+    JOIN 
+      Products p ON od.ProductID = p.ProductID
+    GROUP BY 
+      e.EmployeeID, e.FirstName, e.LastName
+    ORDER BY 
+      TotalSales DESC
+    LIMIT 1;
+")
+)
+```
+
+## 17: Which customers (name and ID) have never bought anything?
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT c.CustomerID, c.CustomerName
+    FROM Customers c
+    LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+    WHERE o.OrderID IS NULL;
+")
+)
+```
+## 18: What is the average cost of the products in each category? List the category name and the average cost.
+
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT c.CategoryName, ROUND(AVG(p.Price), 2) AS AveragePrice
+    FROM Products p
+    JOIN Categories c ON p.CategoryID = c.CategoryID
+    GROUP BY c.CategoryName;
+")
+)
+```
+
+## 19: What is the most recent order? List the order ID and the name, city, and country of the customer who placed it.
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT o.OrderID, c.CustomerName, c.City, c.Country, o.OrderDate
+    FROM Orders o
+    JOIN Customers c ON o.CustomerID = c.CustomerID
+    ORDER BY o.OrderDate DESC
+    LIMIT 1;
+")
+)
+```
+## 20: From how many different (unique) countries do the products come from?
+```{r}
+print(
+  dbGetQuery(dbcon, "
+    SELECT COUNT(DISTINCT Country) AS UniqueSupplierCountries
+    FROM Suppliers;
+")
+)
+```
+## Disconnect from DB
+
+```{r}
+dbDisconnect(dbcon)
+```

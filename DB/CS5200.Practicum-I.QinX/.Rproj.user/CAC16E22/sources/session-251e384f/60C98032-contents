@@ -1,0 +1,83 @@
+---
+title: "Query Tabular Data with SQL"
+author: Xujia Qin
+date: May 24th, 2025
+output: html_notebook
+---
+```{r setup, include=FALSE}
+library(sqldf)
+library(kableExtra)
+library(readr)
+library(lubridate)
+```
+
+
+```{r echo=False}
+# URL of the CSV file
+urls <- c(
+  "https://s3.us-east-2.amazonaws.com/artificium.us/assignments/80.xml/a-80-305/gen-xml/synthsalestxns-Jan2Mar.csv",
+  "https://s3.us-east-2.amazonaws.com/artificium.us/assignments/80.xml/a-80-305/gen-xml/synthsalestxns-Sep2Oct.csv",
+  "https://s3.us-east-2.amazonaws.com/artificium.us/assignments/80.xml/a-80-305/gen-xml/synthsalestxns-Nov2Dec.csv"
+)
+
+# Read and combine all CSV files
+data_list <- lapply(urls, read.csv)
+df <- do.call(rbind, data_list)
+
+# Convert date column
+df$date <- as.Date(df$date)
+
+# Clean 'amount' column: remove dollar signs, commas, and convert to numeric
+df$amount <- gsub("[$,]", "", df$amount)
+df$amount <- as.numeric(df$amount)
+```
+
+# Analysis of Restaurant Visits
+```{r echo=FALSE}
+total_visits <- nrow(df)
+distinct_restaurants <- length(unique(df$restaurant))
+median_amount <- median(df$amount, na.rm = TRUE)
+sd_amount <- sd(df$amount, na.rm = TRUE)
+avg_amount <- mean(df$amount, na.rm = TRUE)
+
+# Most visited restaurant
+visit_counts <- table(df$restaurant)
+most_visited <- names(which.max(visit_counts))
+
+# Wine consumption percentage
+wine_clean <- tolower(as.character(df$wine))
+wine_percent <- mean(wine_clean %in% c("yes", "true", "1")) * 100
+
+cat(sprintf(
+  "We recorded a total number of %d visits across %d different restaurants. ",
+  total_visits, distinct_restaurants
+))
+cat(sprintf(
+  "The median amount spent for a visit across all restaurants is %.2f (σ = %.2f). ",
+  median_amount, sd_amount
+))
+cat(sprintf(
+  "The most visits were to %s. The average amount spent in a visit was %.2f, and %.1f%% of all parties consumed wine.",
+  most_visited, avg_amount, wine_percent
+))
+
+```
+
+# Summary of Revenue by Quarter
+```{r echo=FALSE}
+# Extract quarter
+df$quarter <- paste0("Q", quarter(df$date), "-", format(df$date, "%Y"))
+
+# Use SQL to group revenue
+revenue_summary <- sqldf("
+  SELECT quarter, ROUND(SUM(amount), 2) AS total_revenue
+  FROM df
+  GROUP BY quarter
+  ORDER BY quarter
+")
+
+# Display as table
+kable(revenue_summary, col.names = c("Quarter", "Total Revenue ($)"),
+      caption = "Total Revenue by Quarter") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```

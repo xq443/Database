@@ -1,0 +1,32 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyAxLiBpbnN0YWxsIGxpYlxuaW5zdGFsbC5wYWNrYWdlcyhcIlJNeVNRTFwiKVxuYGBgIn0= -->
+
+```r
+# 1. install lib
+install.packages(\"RMySQL\")
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+# 1. install lib
+install.packages(\"RMySQL\")
+```"
+"1","G1;H1;Errorh in install.packages : Updating loaded packages
+g
+"
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcIkRCSVwiKVxuYGBgIn0= -->
+
+```r
+install.packages(\"DBI\")
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+install.packages(\"DBI\")
+```"
+"1","G1;H1;Errorh in install.packages : Updating loaded packages
+g
+"

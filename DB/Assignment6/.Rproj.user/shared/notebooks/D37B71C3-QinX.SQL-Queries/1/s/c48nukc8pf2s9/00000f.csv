@@ -1,0 +1,53 @@
+"0","# Load RSQLite library"
+"0","library(RSQLite)"
+"0",""
+"0","# Define file path and database file name"
+"0","fpath <- ""/Users/cathyqin/Desktop/DB/Assignment6/"""
+"0","dbfile <- ""OrdersDB.sqlitedb.db"""
+"0",""
+"0","# Connect to existing DB or create a new one"
+"0","dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))"
+"0",""
+"0","# List all tables"
+"0","tables <- dbListTables(dbcon)"
+"0",""
+"0","# For each table, get its schema"
+"0","for (table in tables) {"
+"0","  cat(""Schema for table:"", table, ""\n"")"
+"0","  print(dbListFields(dbcon, table))"
+"0","  cat(""\n"")"
+"0","}"
+"1","Schema for table: Categories 
+[1] ""CategoryID""   ""CategoryName"" ""Description"" 
+
+Schema for table: Customers 
+[1] ""CustomerID""   ""CustomerName"" ""ContactName""  ""Address""      ""City""         ""PostalCode""  
+[7] ""Country""     
+
+Schema for table: Employees 
+[1] ""EmployeeID"" ""LastName""   ""FirstName""  ""BirthDate""  ""Photo""      ""Notes""     
+
+Schema for table: OrderDetails 
+[1] ""OrderDetailID"" ""OrderID""       ""ProductID""     ""Quantity""     
+
+Schema for table: Orders 
+[1] ""OrderID""    ""CustomerID"" ""EmployeeID"" ""OrderDate""  ""ShipperID"" 
+
+Schema for table: Products 
+[1] ""ProductID""   ""ProductName"" ""SupplierID""  ""CategoryID""  ""Unit""        ""Price""      
+
+Schema for table: Shippers 
+[1] ""ShipperID""   ""ShipperName"" ""Phone""      
+
+Schema for table: Suppliers 
+[1] ""SupplierID""   ""SupplierName"" ""ContactName""  ""Address""      ""City""         ""PostalCode""  
+[7] ""Country""      ""Phone""       
+
+Schema for table: sqlite_sequence 
+[1] ""name"" ""seq"" 
+
+"
+"0","# Enable foreign key constraint"
+"0","dbExecute(dbcon, ""PRAGMA foreign_keys = ON"")"
+"1","[1] 0
+"

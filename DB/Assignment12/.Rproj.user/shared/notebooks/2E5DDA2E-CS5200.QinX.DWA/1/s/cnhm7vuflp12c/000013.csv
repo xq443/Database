@@ -1,0 +1,2 @@
+"0","# Display sample rows from OLAP fact table"
+"0","dbGetQuery(olap_conn, ""SELECT * FROM fact_rental_revenue LIMIT 10"")"

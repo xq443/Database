@@ -1,0 +1,512 @@
+")
+print(indexes_after)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Create an index named TitleIndex on film.title
+create_index_sql <- "
+CREATE INDEX IF NOT EXISTS TitleIndex
+ON film(title);
+"
+dbExecute(conn, create_index_sql)
+# Confirm index creation by listing indexes again
+indexes_after <- dbGetQuery(conn, "
+SELECT name FROM sqlite_master
+WHERE type = 'index' AND name = 'TitleIndex';
+")
+print(indexes_after)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE '%gold%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'GOLD%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'GOLD%';
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Drop any user-defined indexes (ignore errors if they don't exist)
+# First, list all indexes in the DB and drop those not part of the system
+indexes <- dbGetQuery(conn, "
+SELECT name
+FROM sqlite_master
+WHERE type = 'index'
+AND sql IS NOT NULL;
+")
+for (index_name in indexes$name) {
+drop_sql <- sprintf("DROP INDEX IF EXISTS [%s];", index_name)
+dbExecute(conn, drop_sql)
+}
+# Run query to get number of films per language
+query <- "
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+result <- dbGetQuery(conn, query)
+print(result)
+# Wrap the with EXPLAIN QUERY PLAN
+explain_query <- "
+EXPLAIN QUERY PLAN
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+query_plan <- dbGetQuery(conn, explain_query)
+print(query_plan)
+# Query to get title, category name, and length for the film "ZORRO ARK"
+query3 <- "
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+result3 <- dbGetQuery(conn, query3)
+print(result3)
+# Measure execution time without index
+time_no_index <- system.time({
+result_no_index <- dbGetQuery(conn, query3)
+})
+print(time_no_index)
+# Query plan for retrieving title, category name, and length of "ZORRO ARK"
+query4 <- "
+EXPLAIN QUERY PLAN
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+plan4 <- dbGetQuery(conn, query4)
+print(plan4)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Create an index named TitleIndex on film.title
+create_index_sql <- "
+CREATE INDEX IF NOT EXISTS TitleIndex ON film(title COLLATE NOCASE);
+"
+dbExecute(conn, create_index_sql)
+# Confirm index creation by listing indexes again
+indexes_after <- dbGetQuery(conn, "
+SELECT name FROM sqlite_master
+WHERE type = 'index' AND name = 'TitleIndex';
+")
+print(indexes_after)
+# Re-run the query from Question 3 with EXPLAIN QUERY PLAN to see if index is used
+query6 <- "
+EXPLAIN QUERY PLAN
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+plan6 <- dbGetQuery(conn, query6)
+print(plan6)
+# Measure execution time with index
+time_with_index <- system.time({
+result_with_index <- dbGetQuery(conn, query6)
+})
+print(time_with_index)
+# Query to find all films with "gold" (case-insensitive) in the title
+query9 <- "
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE '%GOLD%' COLLATE NOCASE;
+"
+# Execute the query
+gold_result <- dbGetQuery(conn, query9)
+print(gold_result)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'GOLD%';
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'GOLD%'COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE '%GOLD%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'GOLD%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE '%GOLD%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE '%GOLD%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Query plan for the prefix "gold" title search
+query_plan_goldprefix <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'GOLD%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_goldprefix <- dbGetQuery(conn, query_plan_goldprefix)
+print(plan_result_goldprefix)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Query plan for the "gold" title search
+query_plan_gold <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE '%gold%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_gold <- dbGetQuery(conn, query_plan_gold)
+print(plan_result_gold)
+# Query plan for the prefix "gold" title search
+query_plan_goldprefix <- "
+EXPLAIN QUERY PLAN
+SELECT title, language.name AS language, length
+FROM film
+JOIN language ON film.language_id = language.language_id
+WHERE title LIKE 'gold%' COLLATE NOCASE;
+"
+# Execute the query plan
+plan_result_goldprefix <- dbGetQuery(conn, query_plan_goldprefix)
+print(plan_result_goldprefix)
+# Load libraries
+library(DBI)
+library(RSQLite)
+dbDisconnect(conn)
+# Connect to SQLite Sakila Database
+db_path <- "sakila.db"
+conn <- dbConnect(RSQLite::SQLite(), dbname = db_path)
+# Show all tables in the database
+dbListTables(conn)
+# Drop any user-defined indexes (ignore errors if they don't exist)
+# First, list all indexes in the DB and drop those not part of the system
+indexes <- dbGetQuery(conn, "
+SELECT name
+FROM sqlite_master
+WHERE type = 'index'
+AND sql IS NOT NULL;
+")
+for (index_name in indexes$name) {
+drop_sql <- sprintf("DROP INDEX IF EXISTS [%s];", index_name)
+dbExecute(conn, drop_sql)
+}
+# Run query to get number of films per language
+query <- "
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+result <- dbGetQuery(conn, query)
+print(result)
+# Wrap the with EXPLAIN QUERY PLAN
+explain_query <- "
+EXPLAIN QUERY PLAN
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+query_plan <- dbGetQuery(conn, explain_query)
+print(query_plan)
+# Query to get title, category name, and length for the film "ZORRO ARK"
+query3 <- "
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+result3 <- dbGetQuery(conn, query3)
+print(result3)
+# Measure execution time without index
+time_no_index <- system.time({
+result_no_index <- dbGetQuery(conn, query3)
+})
+print(time_no_index)
+# Query plan for retrieving title, category name, and length of "ZORRO ARK"
+query4 <- "
+EXPLAIN QUERY PLAN
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+plan4 <- dbGetQuery(conn, query4)
+print(plan4)
+# Create an index named TitleIndex on film.title
+create_index_sql <- "
+CREATE INDEX IF NOT EXISTS TitleIndex ON film(title COLLATE NOCASE);
+"
+dbExecute(conn, create_index_sql)
+# Confirm index creation by listing indexes again
+indexes_after <- dbGetQuery(conn, "
+SELECT name FROM sqlite_master
+WHERE type = 'index' AND name = 'TitleIndex';
+")
+print(indexes_after)
+# Re-run the query from Question 3 with EXPLAIN QUERY PLAN to see if index is used
+query6 <- "
+EXPLAIN QUERY PLAN
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+plan6 <- dbGetQuery(conn, query6)
+print(plan6)
+# Measure execution time with index
+time_with_index <- system.time({
+result_with_index <- dbGetQuery(conn, query6)
+})
+print(time_with_index)
+dbDisconnect(conn)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Drop any user-defined indexes (ignore errors if they don't exist)
+# First, list all indexes in the DB and drop those not part of the system
+indexes <- dbGetQuery(conn, "
+SELECT name
+FROM sqlite_master
+WHERE type = 'index'
+AND sql IS NOT NULL;
+")
+for (index_name in indexes$name) {
+drop_sql <- sprintf("DROP INDEX IF EXISTS [%s];", index_name)
+dbExecute(conn, drop_sql)
+}
+# Run query to get number of films per language
+query <- "
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+result <- dbGetQuery(conn, query)
+print(result)
+# Query to get title, category name, and length for the film "ZORRO ARK"
+query3 <- "
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+result3 <- dbGetQuery(conn, query3)
+print(result3)
+# Measure execution time without index
+time_no_index <- system.time({
+result_no_index <- dbGetQuery(conn, query3)
+})
+print(time_no_index)
+dbDisconnect(conn)
+# Connect to SQLite Sakila Database
+db_path <- "sakila.db"
+conn <- dbConnect(RSQLite::SQLite(), dbname = db_path)
+# Show all tables in the database
+dbListTables(conn)
+# Drop any user-defined indexes (ignore errors if they don't exist)
+# First, list all indexes in the DB and drop those not part of the system
+indexes <- dbGetQuery(conn, "
+SELECT name
+FROM sqlite_master
+WHERE type = 'index'
+AND sql IS NOT NULL;
+")
+for (index_name in indexes$name) {
+drop_sql <- sprintf("DROP INDEX IF EXISTS [%s];", index_name)
+dbExecute(conn, drop_sql)
+}
+# Run query to get number of films per language
+query <- "
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+result <- dbGetQuery(conn, query)
+print(result)
+# Wrap the with EXPLAIN QUERY PLAN
+explain_query <- "
+EXPLAIN QUERY PLAN
+SELECT l.name AS language, COUNT(f.film_id) AS film_count
+FROM film f
+JOIN language l ON f.language_id = l.language_id
+GROUP BY l.name;
+"
+query_plan <- dbGetQuery(conn, explain_query)
+print(query_plan)
+# Query to get title, category name, and length for the film "ZORRO ARK"
+query3 <- "
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+result3 <- dbGetQuery(conn, query3)
+print(result3)
+# Measure execution time without index
+time_no_index <- system.time({
+result_no_index <- dbGetQuery(conn, query3)
+})
+print(time_no_index)
+# Query plan for retrieving title, category name, and length of "ZORRO ARK"
+query4 <- "
+EXPLAIN QUERY PLAN
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+plan4 <- dbGetQuery(conn, query4)
+print(plan4)
+# Create an index named TitleIndex on film.title
+create_index_sql <- "
+CREATE INDEX IF NOT EXISTS TitleIndex ON film(title COLLATE NOCASE);
+"
+dbExecute(conn, create_index_sql)
+# Confirm index creation by listing indexes again
+indexes_after <- dbGetQuery(conn, "
+SELECT name FROM sqlite_master
+WHERE type = 'index' AND name = 'TitleIndex';
+")
+print(indexes_after)
+# Re-run the query from Question 3 with EXPLAIN QUERY PLAN to see if index is used
+query6 <- "
+EXPLAIN QUERY PLAN
+SELECT f.title, c.name AS category, f.length
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE f.title = 'ZORRO ARK';
+"
+plan6 <- dbGetQuery(conn, query6)
+print(plan6)
+# Measure execution time with index
+time_with_index <- system.time({
+result_with_index <- dbGetQuery(conn, query6)
+})
+print(time_with_index)
+# Load libraries
+library(DBI)
+library(RSQLite)
+dbDisconnect(conn)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Load libraries
+library(DBI)
+library(RSQLite)
+# Load libraries
+library(DBI)
+library(RSQLite)

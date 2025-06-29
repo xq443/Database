@@ -1,0 +1,7 @@
+"0","  INSERT INTO Faculty (fid, fname, lname, rank) VALUES
+    (1, 'Alice', 'Johnson', 'Professor'),
+    (2, 'Bob', 'Smith', 'Associate Professor'),
+    (3, 'Cathy', 'Lee', 'Assistant Professor'),
+    (4, 'David', 'Brown', 'Lecturer'),
+    (5, 'Emma', 'Davis', 'Professor');
+"

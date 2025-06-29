@@ -1,0 +1,7 @@
+"0","print("
+"0","  dbGetQuery(dbcon, """
+"0","    SELECT COUNT(*) AS CaviarProducts"
+"0","    FROM Products"
+"0","    WHERE ProductName LIKE '%Caviar%' OR ProductName LIKE '%Kaviar%';"
+"0","  "")"
+"0",")"

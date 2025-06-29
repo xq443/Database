@@ -1,0 +1,6 @@
+"0",""
+"0","print(dbGetQuery(dbcon, """
+"0","  SELECT LastName, FirstName, BirthDate"
+"0","  FROM Employees"
+"0","  ORDER BY LastName;"
+"0","""))"

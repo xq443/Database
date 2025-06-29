@@ -1,0 +1,20 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSU1FMaXRlKVxuZnBhdGggPSBcIi9Vc2Vycy9jYXRoeXFpbi9EZXNrdG9wL0RCL1wiXG5kYmZpbGUgPSBcImNvbW1pdHRlZURCLnNxbGl0ZVwiXG5cbmRiY29uIDwtIGRiQ29ubmVjdChSU1FMaXRlOjpTUUxpdGUoKSwgcGFzdGUwKGZwYXRoLCBkYmZpbGUpKVxuYGBgIn0= -->
+
+```r
+library(RSQLite)
+fpath = \"/Users/cathyqin/Desktop/DB/\"
+dbfile = \"committeeDB.sqlite\"
+
+dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+library(RSQLite)
+fpath = \"/Users/cathyqin/Desktop/DB/\"
+dbfile = \"committeeDB.sqlite\"
+
+dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))
+```"

@@ -1,0 +1,5 @@
+"0",""
+"0","# Clean up (optional)"
+"0","dbExecute(mydb, ""DROP TABLE test_table;"")"
+"1","[1] 0
+"

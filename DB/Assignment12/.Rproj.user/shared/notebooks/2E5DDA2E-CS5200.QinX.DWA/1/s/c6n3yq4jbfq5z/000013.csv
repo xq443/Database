@@ -1,0 +1,5 @@
+"0","# Insert extracted data into OLAP database"
+"0","dbWriteTable(olap_conn, ""fact_rental_revenue"", rental_facts, append = TRUE, row.names = FALSE)"
+"0",""
+"0","# Check that data was inserted"
+"0","dbGetQuery(olap_conn, ""SELECT COUNT(*) AS row_count FROM fact_rental_revenue"")"

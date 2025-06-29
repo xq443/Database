@@ -1,0 +1,8 @@
+"0","# Connect to original transactional database"
+"0","sakila_conn <- dbConnect(SQLite(), ""sakila.db"")"
+"0",""
+"0","# Create and connect to new OLAP database"
+"0","olap_conn <- dbConnect(SQLite(), ""SakilaOLAP.db"")"
+"0","print(""Database Connected!"")"
+"1","[1] ""Database Connected!""
+"

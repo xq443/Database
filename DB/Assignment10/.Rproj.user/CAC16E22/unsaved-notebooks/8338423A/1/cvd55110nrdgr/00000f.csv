@@ -1,0 +1,6 @@
+"0","# Connect to SQLite Sakila Database"
+"0","db_path <- ""sakila.db"""
+"0","conn <- dbConnect(RSQLite::SQLite(), dbname = db_path)"
+"0","print(""connection succeeded!"")"
+"1","[1] ""connection succeeded!""
+"

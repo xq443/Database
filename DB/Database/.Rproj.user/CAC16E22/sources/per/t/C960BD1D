@@ -1,0 +1,26 @@
+{
+    "id": "C960BD1D",
+    "path": "~/Downloads/createSQLiteDBfromR.R",
+    "project_path": null,
+    "type": "r_source",
+    "hash": "973468986",
+    "contents": "",
+    "dirty": false,
+    "created": 1747695242160.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "34,0",
+        "scrollLine": "12"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1747762553,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1747762553556,
+    "read_only": false,
+    "read_only_alternatives": []
+}

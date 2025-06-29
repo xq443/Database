@@ -1,0 +1,7 @@
+"0"," INSERT INTO Committee (name, level, chair) VALUES
+    ('Curriculum Committee', 'Departmental', 1),
+    ('Hiring Committee', 'University', 2),
+    ('Research Committee', 'College', 3),
+    ('Student Affairs Committee', 'Departmental', 4),
+    ('Promotion Committee', 'University', 5);
+"

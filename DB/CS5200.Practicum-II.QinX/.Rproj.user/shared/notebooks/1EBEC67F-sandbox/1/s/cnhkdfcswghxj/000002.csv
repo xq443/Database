@@ -1,0 +1,16 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJFeGVjdXRlKG15ZGIsIFwiRFJPUCBUQUJMRSB0ZXN0X3RhYmxlO1wiKVxuXG5gYGAifQ== -->
+
+```r
+dbExecute(mydb, \"DROP TABLE test_table;\")
+
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+dbExecute(mydb, \"DROP TABLE test_table;\")
+
+```"
+"1","[1] 0
+"

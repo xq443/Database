@@ -1,0 +1,8 @@
+"0","print("
+"0","  dbGetQuery(dbcon, """
+"0","    SELECT c.CategoryName, ROUND(AVG(p.Price), 2) AS AveragePrice"
+"0","    FROM Products p"
+"0","    JOIN Categories c ON p.CategoryID = c.CategoryID"
+"0","    GROUP BY c.CategoryName;"
+"0",""")"
+"0",")"

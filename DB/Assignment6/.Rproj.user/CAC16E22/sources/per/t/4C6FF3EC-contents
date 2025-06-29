@@ -1,0 +1,38 @@
+---
+title: "Working with Tabular Data"
+subtitle: "Analysis of Wines"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,  # This makes all code chunks hidden by default
+                      warning = FALSE,
+                      message = FALSE)
+
+# URL of the CSV file
+url <- "https://s3.us-east-2.amazonaws.com/artificium.us/datasets/whitewines.csv"
+
+
+# Load the CSV file into a data frame
+df.wines <- read.csv(url, stringsAsFactors = FALSE, header = TRUE)
+```
+
+
+There are a total of **`r nrow(df.wines)`** wines in this dataset. **`r round(mean(df.wines$alcohol > 11) * 100, 1)`%** of the wines have an alcohol content over 11%. The highest alcohol content of any wine is **`r round(max(df.wines$alcohol), 1)`%**.
+
+The scatter plot below illustrates the correlation between alcohol and sugar content.
+
+```{r scatter_plot, fig.height=6}
+# Calculate correlation first
+correlation <- cor(df.wines$alcohol, df.wines$residual.sugar)
+
+# Then create the plot
+plot(
+  df.wines$residual.sugar, df.wines$alcohol,
+  main = "Sugar vs Alcohol Content",
+  xlab = "Sugar",
+  ylab = "Alcohol",
+  col = adjustcolor("black", alpha.f = 0.3),
+  pch = 19
+)
+```

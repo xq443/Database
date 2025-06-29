@@ -1,0 +1,7 @@
+"0","# Show all tables in the database"
+"0",""
+"0","dbListTables(con)"
+"1"," [1] ""albums""          ""artists""         ""customers""       ""employees""       ""genres""         
+ [6] ""invoice_items""   ""invoices""        ""media_types""     ""playlist_track""  ""playlists""      
+[11] ""sqlite_sequence"" ""sqlite_stat1""    ""tracks""         
+"

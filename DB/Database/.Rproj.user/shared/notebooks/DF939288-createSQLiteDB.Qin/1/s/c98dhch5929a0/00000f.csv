@@ -1,0 +1,5 @@
+"0","library(RSQLite)"
+"0","fpath = ""/Users/cathyqin/Desktop/DB/"""
+"0","dbfile = ""committeeDB.sqlite"""
+"0",""
+"0","dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))"

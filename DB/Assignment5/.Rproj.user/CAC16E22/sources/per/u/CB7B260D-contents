@@ -1,0 +1,85 @@
+---
+  title: "Creating a new SQLiate databse using code chunks"
+output:
+  html_document:
+  df_print: paged
+---
+  
+  # Motivation
+  
+  This script uses SQL code chunks in R studio to create a new SQLite database. several tables, insert sample data, and tests the database via simple data retrievals.
+
+```{r}
+library(RSQLite)
+fpath = "/Users/cathyqin/Desktop/DB/Assignment5/"
+dbfile = "lessonDB-QinX.sqlitedb"
+
+# if db file already exists, we connect to it, otherwise we create a new db
+dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))
+```
+```{sql connection=dbcon}
+DROP TABLE IF EXISTS Faculty
+```
+
+```{sql connection=dbcon}
+
+CREATE TABLE Faculty (
+  fid INTEGER NOT NULL,
+  fname TEXT NOT NULL,
+  lname TEXT NOT NULL,
+  rank TEXT,
+  PRIMARY KEY (fid)
+)
+```
+
+```{sql connection=dbcon}
+SELECT * FROM Faculty;
+```
+
+```{sql connection=dbcon}
+
+DROP TABLE IF EXISTS Committee
+```
+```{sql connection=dbcon}
+CREATE TABLE Committee (
+  name TEXT NOT NULL,
+  level TEXT ,
+  chair Integer NOT NULL,
+  PRIMARY KEY (name),
+  FOREIGN KEY (chair) REFERENCES Faculty(fid)
+)
+
+```
+
+```{sql connection=dbcon}
+SELECT * FROM Committee;
+
+```
+```{sql connection=dbcon}
+INSERT INTO Faculty (fid, fname, lname, rank) VALUES
+(1, 'Alice', 'Johnson', 'Professor'),
+(2, 'Bob', 'Smith', 'Associate Professor'),
+(3, 'Cathy', 'Lee', 'Assistant Professor'),
+(4, 'David', 'Brown', 'Lecturer'),
+(5, 'Emma', 'Davis', 'Professor');
+
+```
+
+```{sql connection=dbcon}
+INSERT INTO Committee (name, level, chair) VALUES
+('Curriculum Committee', 'Departmental', 1),
+('Hiring Committee', 'University', 2),
+('Research Committee', 'College', 3),
+('Student Affairs Committee', 'Departmental', 4),
+('Promotion Committee', 'University', 5);
+
+```
+
+
+```{r}
+dbDisconnect(dbcon)
+```
+
+
+
+

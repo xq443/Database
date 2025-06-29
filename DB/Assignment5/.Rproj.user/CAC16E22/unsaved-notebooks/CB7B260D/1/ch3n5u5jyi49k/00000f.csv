@@ -1,0 +1,6 @@
+"0","library(RSQLite)"
+"0","fpath = ""/Users/cathyqin/Desktop/DB/Assignment5/"""
+"0","dbfile = ""lessonDB-QinX.sqlitedb"""
+"0",""
+"0","# if db file already exists, we connect to it, otherwise we create a new db"
+"0","dbcon <- dbConnect(RSQLite::SQLite(), paste0(fpath, dbfile))"

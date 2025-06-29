@@ -1,0 +1,8 @@
+"0","CREATE TABLE Committee (
+  name TEXT NOT NULL,
+  level TEXT ,
+  chair Integer NOT NULL,
+  PRIMARY KEY (name),
+  FOREIGN KEY (chair) REFERENCES Faculty(fid)
+)
+"

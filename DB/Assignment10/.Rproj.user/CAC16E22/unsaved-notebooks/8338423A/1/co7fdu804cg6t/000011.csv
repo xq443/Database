@@ -1,0 +1,9 @@
+"0",""
+"0","# Measure execution time without index"
+"0","time_no_index <- system.time({"
+"0","  result_no_index <- dbGetQuery(conn, query3)"
+"0","})"
+"0","print(time_no_index)"
+"1","   user  system elapsed 
+  0.002   0.000   0.002 
+"

@@ -1,0 +1,8 @@
+"0","print("
+"0","  dbGetQuery(dbcon, """
+"0","    SELECT c.CustomerID, c.CustomerName"
+"0","    FROM Customers c"
+"0","    LEFT JOIN Orders o ON c.CustomerID = o.CustomerID"
+"0","    WHERE o.OrderID IS NULL;"
+"0",""")"
+"0",")"

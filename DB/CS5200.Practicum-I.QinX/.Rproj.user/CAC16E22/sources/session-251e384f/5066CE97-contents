@@ -1,0 +1,34 @@
+# Program: Practicum I - Part D / Delete Database
+# Author: Xujia Qin
+# Semester: SummerI 2025
+# Description: Delete (DROP) all tables if they exist. 
+
+# Load required libraries
+library(DBI)
+library(RMySQL)
+
+# Database connection settings
+db_user <- 'avnadmin'
+db_password <- 'AVNS_myNMlu7wBu69NOuFkU1'
+db_name <- 'defaultdb'
+db_host <- 'mysql-1c2ba4a8-northeastern-cee5.k.aivencloud.com'
+db_port <- 19461
+
+# Connect to the database
+con <- dbConnect(RMySQL::MySQL(),
+                 user = db_user,
+                 password = db_password,
+                 dbname = db_name,
+                 host = db_host,
+                 port = db_port)
+
+# Drop tables in reverse dependency order
+dbExecute(con, "DROP TABLE IF EXISTS Incident;")
+dbExecute(con, "DROP TABLE IF EXISTS IncidentType;")
+dbExecute(con, "DROP TABLE IF EXISTS Severity;")
+dbExecute(con, "DROP TABLE IF EXISTS Reporter;")
+dbExecute(con, "DROP TABLE IF EXISTS Flight;")
+
+# Disconnect
+dbDisconnect(con)
+cat("✅Database has been deleted.\n")
